@@ -1,0 +1,40 @@
+<%# Title Bar %> 
+<div>    
+    <label for="">Title</label>
+    <input type="text" name="title" value="<%= book.title %>">
+</div>
+<%# Author Selector %>
+<div>
+    <label for="">Author</label>
+    <select name="author">
+        <% authors.forEach(author => { %>
+        <% if (author.id === book.author) {%> 
+    <option selected label="<%= author.name %>" value="<%= author.id %> ">
+        <%} else { %>
+            <option label="<%= author.name %>" value="<%= author.id %> ">
+        <% } %> 
+    <% }) %>   
+    </select>
+ </div> 
+<%# Publish Date %> 
+<div>
+    <label for="">Publish Date</label>
+    <input type="date" name="publishDate" 
+    value="<%= book.publishDate == null ? '' : 
+    book.publishDate.toISOString().split('T')[0]%>">
+</div>
+<%# Page Count %> 
+<div>
+    <label for="">Page Count</label>
+    <input type="number" name="pageCount" min="1" value="<%= book.pageCount %>">
+</div>
+<%# Cover %>
+<div>
+    <label for="">Cover</label>
+    <input type="file" name="cover">
+</div> 
+<%# Description %> 
+<div>
+    <label for="">Description</label>
+    <textarea name="description"><% book.description %> </textarea>
+</div> 
