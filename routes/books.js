@@ -45,12 +45,24 @@ router.post('/', async (req, res) => {
 
     try {
         const newBook = await book.save()
-        // res.redirect(`books/${newBook.id`})
-        res.redirect('books')
+        res.redirect(`books/${newBook.id}`)
     } catch {
         renderNewPage(res, book, true)
     }
 })
+
+// Show Book Route
+router.get('/:id', async (req, res) => {
+    try {
+      const book = await Book.findById(req.params.id)
+                             .populate('author')
+                             .exec()
+      res.render('books/show', { book: book })
+    } catch {
+    
+      res.redirect('/')
+    }
+  })
 
 async function renderNewPage(res, book, hasError = false) {
     try {

@@ -3,7 +3,6 @@ const router = express.Router()
 const Author = require('../models/author')
 const Book = require('../models/book')
 
-
 // All Authors Route
 router.get('/', async (req, res) => {
     let searchOptions = {}
@@ -47,7 +46,7 @@ router.get('/:id', async (req, res) => {
         const author = await Author.findById(req.params.id)
         const books = await Book.find({author: author.id}).limit(6).exec()
         res.render('authors/show', {
-            author,
+            author: author,
             booksByAuthor: books
         })
     } catch {
@@ -58,7 +57,7 @@ router.get('/:id', async (req, res) => {
 router.get('/:id/edit', async (req, res) => {
     try{
         const author = await Author.findById(req.params.id)
-        res.render('authors/edit', { author })
+        res.render('authors/edit', { author: author })
     } catch{
         res.redirect('/authors')
     }
@@ -66,7 +65,7 @@ router.get('/:id/edit', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     let author
-    try{
+    try {
         author = await Author.findById(req.params.id)
         author.name = req.body.name
         await author.save()
@@ -75,7 +74,7 @@ router.put('/:id', async (req, res) => {
         if (author == null) {
             res.redirect('/')
         } else {
-            res.render('authors/new', {
+            res.render('authors/edit', {
                 author,
                 errorMessage: 'Error updating Author'
             })
@@ -88,7 +87,7 @@ router.delete('/:id', async (req, res) => {
     try{
         author = await Author.findById(req.params.id)
         await author.remove()
-        res.redirect('/authors/')
+        res.redirect('/authors')
     } catch {
         if (author == null) {
             res.redirect('/')
